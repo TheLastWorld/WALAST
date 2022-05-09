@@ -1,0 +1,83 @@
+<%- include('layout/head'); %>
+
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"
+  integrity="sha512-pxLMWs4E33rW9tdIhovcCp2dCo9k4Q8eHw7CETjyjdXf4aX6wvsEBq+KdOJJRFALr6FxNoXx+jksgbE74TZjEw=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script>
+  $(document).ready(function () {
+    //Hosting
+    var socket = io();
+    // Locahost
+    // var socket = io.connect("http://localhost:5050", { path: "/socket.io" });
+
+    socket.on("message", function (msg) {
+      $(".logs").append($("<li>").text(msg));
+    });
+
+    socket.on("qr", function (src) {
+      $("#qrcode").attr("src", src);
+      $("#qrcode").removeAttr("hidden");
+    });
+
+    socket.on("ready", function (data) {
+      $("#qrcode").remove();
+    });
+
+    socket.on("authenticated", function (data) {
+      $("#qrcode").remove();
+    });
+  });
+</script>
+<!-- <script>
+  $(document).ready(function(){
+    var socket = io.connect('http://localhost:5050', { path: '/socket.io'});
+
+    socket.on('message', function(msg){
+      $('.log').append($('<li>').text(msg));
+    });
+    
+    socket.on('qr', function(src){
+      $('#qrcode').attr('src', src);
+    });
+
+    socket.on('ready', function(data) {
+				$('#qrcode').hide();
+			});
+  })
+</script> -->
+<%- include('layout/nav'); %>
+
+<div class="content-wrapper">
+  <section class="content">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card card-info mt-4 ml-4">
+          <div class="card-header">
+            <h3 class="card-title">Scan QR Code</h3>
+          </div>
+
+          <form class="form-horizontal" action="" method="post">
+            <div class="card-body">
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <img src="" alt="QRCode" id="qrcode" hidden />
+                  <h3>Log:</h3>
+                  <ul class="logs"></ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button type="submit" class="btn btn-success float-right">Kirim</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('layout/footer'); %>
