@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const flash = require("req-flash");
 const hhtp = require("http");
+const Swal = require('sweetalert2');
 
 const app = express();
 const server = hhtp.createServer(app);
@@ -108,7 +109,7 @@ app.post("/send-message", async (req, res) => {
   //   }
 
   client.sendMessage(number, message).then(response => {
-    res.redirect(301, 'http://localhost:5050/send');
+    return res.redirect(301, 'http://localhost:5050/send?success=true&message=Logged In Successfully"');
   }).catch(err => {
     res.status(500).json({
       status: false,
